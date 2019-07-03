@@ -1,4 +1,4 @@
-const HOST = 'http://comp3162.win.ftc.ru:8081';
+const HOST = 'https://5d1b084ddd81710014e8812a.mockapi.io';
 let userId = document.querySelector('.select_control-user').value;
 
 const compileUrl = (url, params) => {
@@ -51,7 +51,7 @@ const createRequest = (options, queryOptions, body) => {
     headers: new Headers({
       Accept: "application/json",
       "Content-Type": "application/json",
-      userId: userId
+      //userId: userId
     }),
     method: options.method || "GET",
     body: body ? JSON.stringify(body) : undefined

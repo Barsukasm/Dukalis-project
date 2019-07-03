@@ -88,7 +88,8 @@ body {
 .field,
 .select {
     display: block;
-    margin-bottom: 16px;
+    margin: auto;
+    margin-bottom: 16px!important;
 }
 
 .field_label,
@@ -162,6 +163,9 @@ body {
     color: #fff;
     font-size: 16px;
     width: 300px;
+    margin: auto;
+    margin-bottom: 8px!important;
+    display: block;
 }
 
 .one-book_result {
@@ -176,3 +180,5 @@ body {
     top: 20px;
     right: 20px;
 }
+
+
