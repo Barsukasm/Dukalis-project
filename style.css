@@ -165,7 +165,6 @@ body {
     width: 300px;
     margin: auto;
     margin-bottom: 8px!important;
-    display: block;
 }
 
 .one-book_result {
@@ -181,4 +180,18 @@ body {
     right: 20px;
 }
 
+#karma, #profile-status, #user-name{
+    display: inline;
+}
 
+.nav-bar{
+    align-content: end;
+}
+
+.navigation-buttons {
+    margin-left: 25%;
+}
+
+.navigation-button {
+    display: inline;
+}

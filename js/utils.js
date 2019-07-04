@@ -1,5 +1,5 @@
 const HOST = 'https://5d1b084ddd81710014e8812a.mockapi.io';
-let userId = document.querySelector('.select_control-user').value;
+//let userId = document.querySelector('.select_control-user').value;
 
 const compileUrl = (url, params) => {
   const resultArr = [HOST];
@@ -111,4 +111,19 @@ const getFieldData = formElement => {
   });
 
   return result;
+};
+
+//Мои функции
+
+const renderUserPanel = function (userId) {
+  createRequest({path: `api/v009/users?search=${userId}`, method: "Get"})
+      .then(response =>{
+        const msgProf = `Пользователь: ${response[0].firstName} ${response[0].lastName} Карма: ${response[0].karma}`;
+        document.querySelector("#profile-text").innerHTML = msgProf;
+        console.log("Результат запроса юзера", response);
+      })
+      .catch(err=>{
+        document.querySelector("#profileBar").innerHTML = "Не удалось получить данные пользователя";
+        console.log("Ошибка", err);
+      })
 };
