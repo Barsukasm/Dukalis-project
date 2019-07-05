@@ -1,8 +1,7 @@
-const HOST = 'https://5d1b084ddd81710014e8812a.mockapi.io';
-//let userId = document.querySelector('.select_control-user').value;
+//http://dukalis.testsitesrv.ru
 
 const compileUrl = (url, params) => {
-  const resultArr = [HOST];
+  const resultArr = [];
   const options = Object.assign({}, params);
 
   const pathArr = url.split("/");
@@ -46,12 +45,13 @@ const compileUrl = (url, params) => {
  */
 const createRequest = (options, queryOptions, body) => {
   const requestUrl = compileUrl(options.path, queryOptions);
+  console.log(requestUrl);
 
   return fetch(requestUrl, {
     headers: new Headers({
       Accept: "application/json",
       "Content-Type": "application/json",
-      //userId: userId
+       userId: sessionStorage.getItem('userId') || ''
     }),
     method: options.method || "GET",
     body: body ? JSON.stringify(body) : undefined
@@ -116,9 +116,9 @@ const getFieldData = formElement => {
 //Мои функции
 
 const renderUserPanel = function (userId) {
-  createRequest({path: `api/v009/users?search=${userId}`, method: "Get"})
+  createRequest({path: `api/v001/users/${userId}`, method: "Get"})
       .then(response =>{
-        const msgProf = `Пользователь: ${response[0].firstName} ${response[0].lastName} Карма: ${response[0].karma}`;
+        const msgProf = `Пользователь: ${response.firstName} ${response.lastName} Карма: ${response.karma}`;
         document.querySelector("#profile-text").innerHTML = msgProf;
         console.log("Результат запроса юзера", response);
       })
