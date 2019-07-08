@@ -13,28 +13,41 @@ const renderTasks = task => `
         ${task.employer.id !== parseInt(sessionStorage.getItem('userId'))? `<p>Заказчик: ${task.employer.username}</p>`:
             task.executor === null ? `<p>Пока нет исполнителя</p>`:
                 `<p>Исполнитель: ${task.executor.username}</p>`}
-        <button style='margin: auto; text-align: center; background: green;' id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},${task.status})">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Отозвать':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button>
+        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<p>Статус: ${task.status === 'ACTIVE'? "Свободна": task.status === "PROGRESS"? 'Выполняется': 'Завершено'}</p>`:''}
+        <button style='margin: auto; text-align: center; background: green;' id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},'${task.status}')">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Отозвать':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button>
+        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<button style='margin: auto; text-align: center; background: green;' id="completeTask${task.id}" onclick="checkTaskComplition(${task.id})">Сообщить об успешном выполнении задания</button>`:''}
     </div>
 `;
 
+const checkTaskComplition = function (taskId) {
+    createRequest({path:`api/v001/tasks/${taskId}/complete`, method: "GET"})
+        .then(response=>{
+            document.querySelector(`#completeTask${taskId}`).innerHTML = 'Задание выполнено';
+        })
+        .catch(err=>{
+            document.querySelector(`#completeTask${taskId}`).innerHTML = 'Не удалось отметить задание выполненым';
+            console.log("Не удалось принять задание", err);
+        });
+};
+
 
 const takeTaskFun = function (taskId,taskOwner, taskStatus) {
-    if (taskOwner === sessionStorage.getItem('userId')){
-        createRequest({path:`api/v001/tasks/${taskId}/complete`, method: "GET"})
+    if (taskOwner === parseInt(sessionStorage.getItem('userId'))){
+        createRequest({path:`api/v001/tasks/${taskId}/cancel`, method: "GET"})
             .then(response=>{
                 document.querySelector(`#takeTask${taskId}`).innerHTML = 'Задание отозвано';
             })
             .catch(err=>{
-                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось принять задание';
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось отозвать задание';
                 console.log("Не удалось принять задание", err);
             })
-    } else if (taskStatus === 'PROGRESS'){
+    } else if (taskStatus === "PROGRESS"){
         createRequest({path:`api/v001/tasks/${taskId}/cancel`, method: "GET"})
             .then(response=>{
                 document.querySelector(`#takeTask${taskId}`).innerHTML = 'Задание о отменено';
             })
             .catch(err=>{
-                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось принять задание';
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось отменить задание';
                 console.log("Не удалось принять задание", err);
             })
     } else {
@@ -43,7 +56,7 @@ const takeTaskFun = function (taskId,taskOwner, taskStatus) {
                 document.querySelector(`#takeTask${taskId}`).innerHTML = 'Принято на выполнение';
             })
             .catch(err=>{
-                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось принять задание';
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось взять задание на выполнение';
                 console.log("Не удалось принять задание", err);
             })
     }
