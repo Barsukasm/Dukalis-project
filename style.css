@@ -207,7 +207,6 @@ body {
     display: flex;
     flex-flow: column wrap;
     justify-content: flex-start;
-    height: 600px;
 }
 
 .my_container {
@@ -218,25 +217,37 @@ body {
 }
 
 #item_my_container1 {
-    background: #F4984D;
+    margin-top: 10px;
+    border-radius: 25px;
+    font-size: 25px;
+    background: #FFE1CA;
     text-align: center;
     font-family: fantasy;
+    width: 100%;
 }
 
 #item_my_container2 {
-    background: #F4984D;
+    border-radius: 25px;
+    font-size: 25px;
+    background: #FFE1CA;
     text-align: center;
     font-family: fantasy;
+    width: 100%;
 }
 
 #item_my_container3 {
-    background: #F4984D;
+    border-radius: 25px;
+    font-size: 25px;
+    background: #FFE1CA;
     text-align: center;
     font-family: fantasy;
+    width: 100%;
 }
 
 #item_my_container4 {
-    background: #F4984D;
+    border-radius: 25px;
+    font-size: 25px;
+    background: #E5603C;
     text-align: center;
     font-family: fantasy;
 }
@@ -247,4 +258,13 @@ body {
     color: white;
     background: black;
     border-radius: 20px;
+}
+
+.titletask {
+    margin-top: 10px;
+    border-radius: 25px;
+    font-size: 20px;
+    background: #E5603C;
+    text-align: center;
+    font-family: fantasy;
 }

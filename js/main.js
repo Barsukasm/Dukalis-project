@@ -4,14 +4,14 @@ window.addEventListener('load', event =>{
 });
 
 const renderTasks = task => `
-     <button type="button" data-toggle="collapse" data-target="#collapse${task.id}" aria-expanded="false" aria-controls="collapse${task.id}">
+     <button class='titletask' type="button" data-toggle="collapse" data-target="#collapse${task.id}" aria-expanded="false" aria-controls="collapse${task.id}">
         Задание: ${task.descriptionShort}     
      </button>
-    <div style='background: black; color: white;' id="collapse${task.id}" class="collapse">
+    <div style='background: #FFE1CA; color: black; font-family: Fantasy; margin-left: 15px; font-size: 20px;' id="collapse${task.id}" class="collapse">
         <p>Полное описание задания: ${task.descriptionFull}</p>
         <p>Адрес расположения задания: ${task.address}</p>
         <p>Заказчик: </p>
-        <button style='text-align: center; background: green;' id="takeTask${task.id}">Выполнять</button>
+        <button style='margin: auto; text-align: center; background: green;' id="takeTask${task.id}">Выполнять</button>
     </div>
 `;
 
@@ -38,10 +38,10 @@ const createTask = function() {
             const updatedDateTime = parseInt(+new Date()*1);
             const queryOptions="";
             const newTask={
-                "address": document.querySelector('input[name=address]'),
+                "address": document.querySelector('input[name=address]').value,
                 "createdDateTime": createdDateTime,
-                "descriptionFull": document.querySelector('input[name=descriptionFull]'),
-                "descriptionShort": document.querySelector('input[name=descriptionShort]'),
+                "descriptionFull": document.querySelector('input[name=descriptionFull]').value,
+                "descriptionShort": document.querySelector('input[name=descriptionShort]').value,
                 "employer": {
                     "age": response.age,
                     "city": response.city,
