@@ -1,4 +1,4 @@
-//http://dukalis.testsitesrv.ru
+//https://dukalis.testsitesrv.ru
 
 const compileUrl = (url, params) => {
   const resultArr = [];

@@ -207,7 +207,6 @@ body {
     display: flex;
     flex-flow: column wrap;
     justify-content: flex-start;
-    height: 600px;
 }
 
 .my_container {
