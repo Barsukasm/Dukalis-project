@@ -218,34 +218,38 @@ body {
 
 #item_my_container1 {
     margin-top: 10px;
-    border-radius: 25px;
+    box-shadow: 0 0 5px;
+    border-radius: 20px;
     font-size: 25px;
-    background: #FFE1CA;
+    background: #F4984D;
     text-align: center;
     font-family: fantasy;
     width: 100%;
 }
 
 #item_my_container2 {
-    border-radius: 25px;
+    box-shadow: 0 0 5px;
+    border-radius: 20px;
     font-size: 25px;
-    background: #FFE1CA;
+    background: #F4984D;
     text-align: center;
     font-family: fantasy;
     width: 100%;
 }
 
 #item_my_container3 {
-    border-radius: 25px;
+    box-shadow: 0 0 5px;
+    border-radius: 20px;
     font-size: 25px;
-    background: #FFE1CA;
+    background: #F4984D;
     text-align: center;
     font-family: fantasy;
     width: 100%;
 }
 
 #item_my_container4 {
-    border-radius: 25px;
+    box-shadow: 0 0 5px;
+    border-radius: 20px;
     font-size: 25px;
     background: #E5603C;
     text-align: center;

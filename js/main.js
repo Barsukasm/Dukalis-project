@@ -7,13 +7,13 @@ const renderTasks = task => `
      <button class="titletask" type="button" data-toggle="collapse" data-target="#collapse${task.id}" aria-expanded="false" aria-controls="collapse${task.id}">
         Задание: ${task.descriptionShort}     
      </button>
-    <div style='background: #FFE1CA; color: black; font-family: Fantasy; margin-left: 15px; font-size: 20px;' id="collapse${task.id}" class="collapse">
+    <div style='background: #F4984D; color: black; font-family: Helvetica; margin-left: 20px; font-size: 20px;' id="collapse${task.id}" class="collapse">
         <p>Полное описание задания: ${task.descriptionFull}</p>
         <p>Адрес расположения задания: ${task.address}</p>
         ${task.employer.id !== parseInt(sessionStorage.getItem('userId'))? `<p>Заказчик: ${task.employer.username}</p>`:
             task.executor === null ? `<p>Пока нет исполнителя</p>`:
                 `<p>Исполнитель: ${task.executor.username}</p>`}
-        <button style='margin: auto; text-align: center; background: green;' id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},${task.status})">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Отозвать':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button>
+        <button style='margin-left: auto; text-align: center; background: #E5603C;' id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},${task.status})">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Отозвать':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button>
     </div>
 `;
 
