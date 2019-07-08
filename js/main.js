@@ -10,23 +10,44 @@ const renderTasks = task => `
     <div style='background: #FFE1CA; color: black; font-family: Fantasy; margin-left: 15px; font-size: 20px;' id="collapse${task.id}" class="collapse">
         <p>Полное описание задания: ${task.descriptionFull}</p>
         <p>Адрес расположения задания: ${task.address}</p>
-        ${task.employer.id != sessionStorage.getItem('userId') ? `<p>Заказчик: ${task.employer.username}</p>`:
+        ${task.employer.id !== parseInt(sessionStorage.getItem('userId'))? `<p>Заказчик: ${task.employer.username}</p>`:
             task.executor === null ? `<p>Пока нет исполнителя</p>`:
                 `<p>Исполнитель: ${task.executor.username}</p>`}
-        <button style='margin: auto; text-align: center; background: green;' id="takeTask${task.id}" onclick="takeTaskFun(${task.id})">Выполнять</button>
+        <button style='margin: auto; text-align: center; background: green;' id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},${task.status})">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Отозвать':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button>
     </div>
 `;
 
 
-const takeTaskFun = function (taskId) {
-    createRequest({path:`api/v001/tasks/${taskId}/apply`, method: "GET"})
-        .then(response=>{
-            document.querySelector(`#takeTask${taskId}`).innerHTML = 'Принято на выполнение';
-        })
-        .catch(err=>{
-            document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось принять задание';
-            console.log("Не удалось принять задание", err);
-        })
+const takeTaskFun = function (taskId,taskOwner, taskStatus) {
+    if (taskOwner === sessionStorage.getItem('userId')){
+        createRequest({path:`api/v001/tasks/${taskId}/complete`, method: "GET"})
+            .then(response=>{
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Задание отозвано';
+            })
+            .catch(err=>{
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось принять задание';
+                console.log("Не удалось принять задание", err);
+            })
+    } else if (taskStatus === 'PROGRESS'){
+        createRequest({path:`api/v001/tasks/${taskId}/cancel`, method: "GET"})
+            .then(response=>{
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Задание о отменено';
+            })
+            .catch(err=>{
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось принять задание';
+                console.log("Не удалось принять задание", err);
+            })
+    } else {
+        createRequest({path:`api/v001/tasks/${taskId}/apply`, method: "GET"})
+            .then(response=>{
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Принято на выполнение';
+            })
+            .catch(err=>{
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось принять задание';
+                console.log("Не удалось принять задание", err);
+            })
+    }
+
 };
 
 
@@ -49,22 +70,6 @@ const RequestTasks = function(qParams) {
 };
 
 
-const RequestTasksTmp = function(qParams) {
-    qPath = `api/v001/tasks`;
-    fullPath = "";
-    if (qParams === undefined) fullPath = qPath;
-    else fullPath = qPath + '?' + qParams;
-    createRequest({path: fullPath, method: "GET"})
-        .then(response => {
-            document.querySelector(".my_container2").innerHTML = response
-                .map(renderTasks)
-                .join("");
-            console.log("Результат запроса заданий", response);
-        })
-        .catch(err => {
-            console.log(err);
-        })
-};
 
 RequestTasks();
 
@@ -90,7 +95,7 @@ const createTask = function() {
             const newTask={
                 "address": document.querySelector('input[name=address]').value,
                 "createdDateTime": createdDateTime,
-                "descriptionFull": document.querySelector('input[name=descriptionFull]').value,
+                "descriptionFull": document.querySelector('textarea[name=descriptionFull]').value,
                 "descriptionShort": document.querySelector('input[name=descriptionShort]').value,
                 "employer": {
                     "age": response.age,
