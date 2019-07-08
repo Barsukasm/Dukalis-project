@@ -4,31 +4,81 @@ window.addEventListener('load', event =>{
 });
 
 const renderTasks = task => `
-     <button class='titletask' type="button" data-toggle="collapse" data-target="#collapse${task.id}" aria-expanded="false" aria-controls="collapse${task.id}">
+     <button class="titletask" type="button" data-toggle="collapse" data-target="#collapse${task.id}" aria-expanded="false" aria-controls="collapse${task.id}">
         Задание: ${task.descriptionShort}     
      </button>
     <div style='background: #FFE1CA; color: black; font-family: Fantasy; margin-left: 15px; font-size: 20px;' id="collapse${task.id}" class="collapse">
         <p>Полное описание задания: ${task.descriptionFull}</p>
         <p>Адрес расположения задания: ${task.address}</p>
-        <p>Заказчик: </p>
-        <button style='margin: auto; text-align: center; background: green;' id="takeTask${task.id}">Выполнять</button>
+        ${task.employer.id != sessionStorage.getItem('userId') ? `<p>Заказчик: ${task.employer.username}</p>`:
+            task.executor === null ? `<p>Пока нет исполнителя</p>`:
+                `<p>Исполнитель: ${task.executor.username}</p>`}
+        <button style='margin: auto; text-align: center; background: green;' id="takeTask${task.id}" onclick="takeTaskFun(${task.id})">Выполнять</button>
     </div>
 `;
 
-const RequestTasks = function() {
-createRequest({path:`api/v001/tasks`, method: "GET"})
-    .then(response => {
-        document.querySelector(".my_container2").innerHTML = response
-            .map(renderTasks)
-            .join("");
-        console.log("Результат запроса заданий", response);
-    })
-    .catch(err => {
-        console.log(err);
-    })
+
+const takeTaskFun = function (taskId) {
+    createRequest({path:`api/v001/tasks/${taskId}/apply`, method: "GET"})
+        .then(response=>{
+            document.querySelector(`#takeTask${taskId}`).innerHTML = 'Принято на выполнение';
+        })
+        .catch(err=>{
+            document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось принять задание';
+            console.log("Не удалось принять задание", err);
+        })
+};
+
+
+//Нажатие на таб qParams - параметры запроса, например "type=PUBLIC&status=PROGRESS"
+const RequestTasks = function(qParams) {
+    qPath = `api/v001/tasks`;
+    fullPath = "";
+    if (qParams === undefined) fullPath = qPath;
+    else fullPath = qPath + '?' + qParams;
+    createRequest({path: fullPath, method: "GET"})
+        .then(response => {
+            document.querySelector(".my_container2").innerHTML = response
+                .map(renderTasks)
+                .join("");
+            console.log("Результат запроса заданий", response);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+};
+
+
+const RequestTasksTmp = function(qParams) {
+    qPath = `api/v001/tasks`;
+    fullPath = "";
+    if (qParams === undefined) fullPath = qPath;
+    else fullPath = qPath + '?' + qParams;
+    createRequest({path: fullPath, method: "GET"})
+        .then(response => {
+            document.querySelector(".my_container2").innerHTML = response
+                .map(renderTasks)
+                .join("");
+            console.log("Результат запроса заданий", response);
+        })
+        .catch(err => {
+            console.log(err);
+        })
 };
 
 RequestTasks();
+
+document.querySelector("#item_my_container1").addEventListener('click', event=>{
+    RequestTasks();
+});
+
+document.querySelector("#item_my_container2").addEventListener('click',event=>{
+    RequestTasks("type=PERSONAL");
+});
+
+document.querySelector("#item_my_container3").addEventListener('click',event=>{
+    RequestTasks("type=PUBLIC&status=PROGRESS");
+});
 
 const createTask = function() {
     const currentUserId=sessionStorage.getItem('userId');
