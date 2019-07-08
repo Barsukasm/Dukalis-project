@@ -195,3 +195,56 @@ body {
 .navigation-button {
     display: inline;
 }
+
+.my_container1 {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    height: 200px;
+}
+
+.my_container2 {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    height: 600px;
+}
+
+.my_container {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    height: 450px;
+}
+
+#item_my_container1 {
+    background: #F4984D;
+    text-align: center;
+    font-family: fantasy;
+}
+
+#item_my_container2 {
+    background: #F4984D;
+    text-align: center;
+    font-family: fantasy;
+}
+
+#item_my_container3 {
+    background: #F4984D;
+    text-align: center;
+    font-family: fantasy;
+}
+
+#item_my_container4 {
+    background: #F4984D;
+    text-align: center;
+    font-family: fantasy;
+}
+
+.pole {
+    padding: 0px 0px 0px 10px;
+    font-family: "Comic Sans MS";
+    color: white;
+    background: black;
+    border-radius: 20px;
+}
