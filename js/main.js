@@ -7,15 +7,15 @@ const renderTasks = task => `
      <button class="titletask" type="button" data-toggle="collapse" data-target="#collapse${task.id}" aria-expanded="false" aria-controls="collapse${task.id}">
         Задание: ${task.descriptionShort}     
      </button>
-    <div style='background: #FFE1CA; color: black; font-family: Fantasy; margin-left: 15px; font-size: 20px;' id="collapse${task.id}" class="collapse">
-        <p>Полное описание задания: ${task.descriptionFull}</p>
-        <p>Адрес расположения задания: ${task.address}</p>
-        ${task.employer.id !== parseInt(sessionStorage.getItem('userId'))? `<p>Заказчик: ${task.employer.username}</p>`:
-            task.executor === null ? `<p>Пока нет исполнителя</p>`:
-                `<p>Исполнитель: ${task.executor.username}</p>`}
-        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<p>Статус: ${task.status === 'ACTIVE'? "Свободна": task.status === "PROGRESS"? 'Выполняется': 'Завершено'}</p>`:''}
-        <button style='margin: auto; text-align: center; background: green;' id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},'${task.status}')">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Отозвать':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button>
-        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<button style='margin: auto; text-align: center; background: green;' id="completeTask${task.id}" onclick="checkTaskComplition(${task.id})">Сообщить об успешном выполнении задания</button>`:''}
+    <div style='border-radius: 0px 0px 25px 25px; box-shadow: 5px 5px 5px; background: #E5603C; color: black; font-family: "Comic Sans MS"; margin-left: 20px; margin-right: 20px; font-size: 20px; padding-left: 15px' id="collapse${task.id}" class="collapse">
+        <p><b>Полное описание задания:</b> ${task.descriptionFull}</p>
+        <p><b>Адрес расположения задания:</b> ${task.address}</p>
+        ${task.employer.id !== parseInt(sessionStorage.getItem('userId'))? `<p><b>Заказчик:</b> ${task.employer.username}</p>`:
+            task.executor === null ? `<p><b>Пока нет исполнителя</b></p>`:
+                `<p><b>Исполнитель:</b> ${task.executor.username}</p>`}
+        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<p><b>Статус:</b> ${task.status === 'ACTIVE'? "Свободна": task.status === "PROGRESS"? 'Выполняется': 'Завершено'}</p>`:''}
+        <div style="text-align: center"><button style='margin-bottom: 10px; text-align: center; background: #F4984D; border-radius: 25px; border: 1px solid black;' id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},'${task.status}')">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Отозвать':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button></div>
+        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<button style='margin: auto; text-align: center; background: #F4984D; border-radius: 25px; border: 1px solid black;' id="completeTask${task.id}" onclick="checkTaskComplition(${task.id})">Сообщить об успешном выполнении задания</button>`:''}
     </div>
 `;
 

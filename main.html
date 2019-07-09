@@ -11,15 +11,15 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Дукалис</title>
 </head>
-<body style="background: #FFE1CA">
+<body style="background: #AD622F">
 
-<nav class="navbar navbar-dark bg-warning">
+<nav class="navbar navbar-dark" style="background: #F4984D; box-shadow: 3px 3px; margin-bottom: 10px">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-            <span class="text-light"><h2 style="color: black; font-family: Helvetica;">Бюро добрых дел "Дукалис"</h2></span>
+            <span class="text-light"><h2 style="color: black; font-family: segoe print; font-size: 30px;"><b>Бюро добрых дел "Дукалис"</b></h2></span>
         </li>
     </ul>
-    <span class="navbar-text text-light" id="profile-text"></span>
+    <span class="navbar-text" id="profile-text" style="color: black; font-family: segoe print; font-size: 30px;"></span>
 </nav>
 
 
@@ -30,7 +30,7 @@
 
 <div class="container">
     <div class="row">
-        <div style="background: #FFE1CA;" class="col-4">
+        <div style="background: none;" class="col-4">
             <div class="my_container1">
                 <button id="item_my_container1">Активные задания</button>
                 <button id="item_my_container2">Мои задания</button>
@@ -39,28 +39,28 @@
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                     <div class="modal-dialog" role="document">
-                        <div style="background: #444444" class="modal-content">
+                        <div style="background: #AD622F; border-radius: 25px; box-shadow: 2px 2px;" class="modal-content">
                             <div class="modal-header">
-                                <h5 style="text-align: center; color: white" class="modal-title" id="exampleModalLongTitle">Создать новое задание</h5>
+                                <h5 style="text-align: center; color: black; font-family: 'Segoe Print';" class="modal-title" id="exampleModalLongTitle">Создать новое задание</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <div class="my_container">
-                                    <h5 style="text-align: center; color: white;">Название задания</h5>
+                                    <h5 style="text-align: center; color: black; font-family: 'Segoe Print';">Название задания</h5>
                                     <input class="pole" name="name" value="">
-                                    <h5 style="text-align: center; color: white;">Краткое описание</h5>
+                                    <h5 style="text-align: center; color: black; font-family: 'Segoe Print';">Краткое описание</h5>
                                     <input class="pole" name="descriptionShort" value="">
-                                    <h5 style="text-align: center; color: white;">Полное описание</h5>
+                                    <h5 style="text-align: center;  color: black; font-family: 'Segoe Print';;">Полное описание</h5>
                                     <textarea style="height: 200px" class="pole" name="descriptionFull" value=""></textarea>
-                                    <h5 style="text-align: center; color: white;">Адрес расположения задания</h5>
+                                    <h5 style="text-align: center; color: black; font-family: 'Segoe Print';">Адрес расположения задания</h5>
                                     <input class="pole" name="address" value="">
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background: red">Закрыть</button>
-                                <button type="button" class="btn btn-primary" style="background: forestgreen" onclick="createTask()">Создать</button>
+                                <div style="text-align: center"><button type="button" class="btn btn-secondary" data-dismiss="modal" style="background: #E5603C">Закрыть</button></div>
+                                <div style="text-align: center"><button type="button" class="btn btn-primary" style="background: springgreen" onclick="createTask()">Создать</button></div>
                             </div>
                         </div>
                     </div>

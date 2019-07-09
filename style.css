@@ -223,8 +223,8 @@ body {
     font-size: 25px;
     background: #F4984D;
     text-align: center;
-    font-family: fantasy;
-    width: 100%;
+    font-weight: bold;
+    font-family: segoe print;
 }
 
 #item_my_container2 {
@@ -233,8 +233,8 @@ body {
     font-size: 25px;
     background: #F4984D;
     text-align: center;
-    font-family: fantasy;
-    width: 100%;
+    font-weight: bold;
+    font-family: segoe print;
 }
 
 #item_my_container3 {
@@ -243,8 +243,8 @@ body {
     font-size: 25px;
     background: #F4984D;
     text-align: center;
-    font-family: fantasy;
-    width: 100%;
+    font-weight: bold;
+    font-family: segoe print;
 }
 
 #item_my_container4 {
@@ -253,22 +253,26 @@ body {
     font-size: 25px;
     background: #E5603C;
     text-align: center;
-    font-family: fantasy;
+    font-weight: bold;
+    font-family: segoe print;
 }
 
 .pole {
     padding: 0px 0px 0px 10px;
-    font-family: "Comic Sans MS";
-    color: white;
-    background: black;
+    font-family: "segoe print";
+    color: black;
+    background: #F4984D;
     border-radius: 20px;
+    height: 40px;
 }
 
 .titletask {
-    margin-top: 10px;
     border-radius: 25px;
+    border: 1px solid black;
+    margin-top: 10px;
     font-size: 20px;
-    background: #E5603C;
+    background: #F4984D;
     text-align: center;
-    font-family: fantasy;
+    font-weight: bold;
+    font-family: segoe print;
 }
