@@ -15,11 +15,28 @@ const renderTasks = task => `
                 `<p><b>Исполнитель:</b> ${task.executor.username}</p>`}
         ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<p><b>Статус:</b> ${task.status === 'ACTIVE'? "Свободна": task.status === "PROGRESS"? 'Выполняется': 'Завершено'}</p>`:''}
         <div style="text-align: center">
-        <button  class="button_task" id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},'${task.status}')">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Пожаловаться':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button>
+        ${createTaskButt(task)}
         ${task.employer.id === parseInt(sessionStorage.getItem('userId'))&&task.status.localeCompare("PROGRESS") === 0? `<button class="button_task" id="completeTask${task.id}" onclick="checkTaskComplition(${task.id})">Сообщить о выполнении</button>`:''}
         </div>
     </div>
 `;
+
+
+const createTaskButt = task => {
+    if (task.employer.id === parseInt(sessionStorage.getItem('userId'))){
+        //Если задание принадлежить пользователю и оно находится в процессе выполнения, то добавляем кнопку пожаловаться
+        if (task.status.localeCompare("PROGRESS")===0){
+            phrase = 'Пожаловаться';
+        } else {
+            //В остальных случаях не рендерим ничего
+            return '';
+        }
+    } else {
+        //Для исполнителя надпись на кнопке будет зависеть от статуса задачи
+        task.status === 'PROGRESS'? phrase ='Отказаться': phrase ='Выполнять';
+    }
+    return `<button class="button_task" id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},'${task.status}')">${phrase}</button>`;
+};
 
 const checkTaskComplition = function (taskId) {
     createRequest({path:`api/v001/tasks/${taskId}/complete`, method: "GET"})
