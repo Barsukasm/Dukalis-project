@@ -90,14 +90,17 @@ RequestTasks();
 
 document.querySelector("#item_my_container1").addEventListener('click', event=>{
     RequestTasks();
+    renderUserPanel(sessionStorage.getItem('userId'));
 });
 
 document.querySelector("#item_my_container2").addEventListener('click',event=>{
     RequestTasks("type=PERSONAL");
+    renderUserPanel(sessionStorage.getItem('userId'));
 });
 
 document.querySelector("#item_my_container3").addEventListener('click',event=>{
     RequestTasks("type=PUBLIC&status=PROGRESS");
+    renderUserPanel(sessionStorage.getItem('userId'));
 });
 
 const createTask = function() {
