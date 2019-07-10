@@ -15,8 +15,8 @@ const renderTasks = task => `
                 `<p><b>Исполнитель:</b> ${task.executor.username}</p>`}
         ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<p><b>Статус:</b> ${task.status === 'ACTIVE'? "Свободна": task.status === "PROGRESS"? 'Выполняется': 'Завершено'}</p>`:''}
         <div style="text-align: center">
-        <button  class="button_task" id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},'${task.status}')">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Отозвать':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button>
-        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<button class="button_task" id="completeTask${task.id}" onclick="checkTaskComplition(${task.id})">Сообщить о выполнении</button>`:''}
+        <button  class="button_task" id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},'${task.status}')">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Пожаловаться':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button>
+        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))&&task.status.localeCompare("PROGRESS") === 0? `<button class="button_task" id="completeTask${task.id}" onclick="checkTaskComplition(${task.id})">Сообщить о выполнении</button>`:''}
         </div>
     </div>
 `;
@@ -35,12 +35,12 @@ const checkTaskComplition = function (taskId) {
 
 const takeTaskFun = function (taskId,taskOwner, taskStatus) {
     if (taskOwner === parseInt(sessionStorage.getItem('userId'))){
-        createRequest({path:`api/v001/tasks/${taskId}/cancel`, method: "GET"})
+        createRequest({path:`api/v001/tasks/${taskId}/complain`, method: "GET"})
             .then(response=>{
-                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Задание отозвано';
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Жалоба принята';
             })
             .catch(err=>{
-                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось отозвать задание';
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось принять жалобу';
                 console.log("Не удалось принять задание", err);
             })
     } else if (taskStatus === "PROGRESS"){
