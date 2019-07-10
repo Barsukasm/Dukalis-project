@@ -202,7 +202,7 @@ body {
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
-    height: 450px;
+    height: auto;
 }
 
 #item_my_container4 {
