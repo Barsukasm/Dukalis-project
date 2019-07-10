@@ -7,7 +7,7 @@ const renderTasks = task => `
      <button class="titletask shadow-sm" type="button" data-toggle="collapse" data-target="#collapse${task.id}" aria-expanded="true" aria-controls="collapse${task.id}">
         Задание: ${task.descriptionShort}     
      </button>
-    <div style='box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important; background: white; color: black; margin-bottom: 10px; margin-top: 10px; padding-left: 15px; padding-top: 10px' id="collapse${task.id}" class="collapse">
+    <div style='box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important; background: white; color: black; margin-bottom: 10px; margin-top: 2px; padding-left: 15px; padding-top: 10px' id="collapse${task.id}" class="collapse">
         <p><b>Полное описание задания:</b> ${task.descriptionFull}</p>
         <p><b>Адрес расположения задания:</b> ${task.address}</p>
         ${task.employer.id !== parseInt(sessionStorage.getItem('userId'))? `<p><b>Заказчик:</b> ${task.employer.username}</p>`:
@@ -141,4 +141,6 @@ const createTask = function() {
         .catch(err => {
             console.log(err);
         })
+    document.querySelector("#close_modal_window").click();
+    RequestTasks();
 };
