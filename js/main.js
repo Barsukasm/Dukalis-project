@@ -14,8 +14,8 @@ const renderTasks = task => `
             task.executor === null ? `<p><b>Пока нет исполнителя</b></p>`:
                 `<p><b>Исполнитель:</b> ${task.executor.username}</p>`}
         ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<p><b>Статус:</b> ${task.status === 'ACTIVE'? "Свободна": task.status === "PROGRESS"? 'Выполняется': 'Завершено'}</p>`:''}
-        <div style="text-align: center"><button  class="button_task" id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},'${task.status}')">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Отозвать':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button></div>
-        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<button class="button_task" id="completeTask${task.id}" onclick="checkTaskComplition(${task.id})">Сообщить об успешном выполнении задания</button>`:''}
+        <button  class="button_task" id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},'${task.status}')">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Отозвать':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button>
+        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<button class="button_task" id="completeTask${task.id}" onclick="checkTaskComplition(${task.id})">Сообщить о выполнении</button>`:''}
     </div>
 `;
 

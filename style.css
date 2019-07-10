@@ -272,7 +272,7 @@ h5 {
 
 .button_task:hover {
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
-    background: #E5603C;
+    background: #F4984D;
     color: lightgray;
 }
 
@@ -309,16 +309,26 @@ ul.items li:hover {
 }
 
 .button_create {
-    background: white !important;
+    background: #F4984D !important;
     color: black !important;
     text-align: center !important;
+    width: 150px !important;
+    height: 50px !important;
+    border: none;
+}
+
+.button_create:hover {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+    background: #F4984D !important;
 }
 
 .button_close {
-    background: #E5603C;
-    color: white;
-    text-align: center;
-
+    background: #E5603C !important;
+    color: white !important;
+    text-align: center !important;
+    width: 150px !important;
+    height: 50px !important;
+    border: none;
 }
 
 .text_of_profile {
