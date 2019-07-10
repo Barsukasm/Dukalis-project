@@ -237,7 +237,7 @@ body {
 }
 
 .titletask {
-    height: 50px;
+    height: 40px;
     margin: 0 0 10px 0;
     transition: 0.2s;
     background: white;
@@ -262,8 +262,8 @@ body {
 }
 
 .button_task {
+    color: white;
     border: none;
-    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.175) !important;
     margin-bottom: 10px;
     height: 40px;
     width: 200px;
@@ -273,7 +273,7 @@ body {
 
 .button_task:hover {
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
-    color: white;
+    color: black;
 }
 
 ul.items {
