@@ -4,18 +4,20 @@ window.addEventListener('load', event =>{
 });
 
 const renderTasks = task => `
-     <button class="titletask" type="button" data-toggle="collapse" data-target="#collapse${task.id}" aria-expanded="false" aria-controls="collapse${task.id}">
+     <button class="titletask shadow-sm" type="button" data-toggle="collapse" data-target="#collapse${task.id}" aria-expanded="true" aria-controls="collapse${task.id}">
         Задание: ${task.descriptionShort}     
      </button>
-    <div style='background: #FFE1CA; color: black; font-family: Fantasy; margin-left: 15px; font-size: 20px;' id="collapse${task.id}" class="collapse">
-        <p>Полное описание задания: ${task.descriptionFull}</p>
-        <p>Адрес расположения задания: ${task.address}</p>
-        ${task.employer.id !== parseInt(sessionStorage.getItem('userId'))? `<p>Заказчик: ${task.employer.username}</p>`:
-            task.executor === null ? `<p>Пока нет исполнителя</p>`:
-                `<p>Исполнитель: ${task.executor.username}</p>`}
-        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<p>Статус: ${task.status === 'ACTIVE'? "Свободна": task.status === "PROGRESS"? 'Выполняется': 'Завершено'}</p>`:''}
-        <button style='margin: auto; text-align: center; background: green;' id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},'${task.status}')">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Отозвать':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button>
-        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<button style='margin: auto; text-align: center; background: green;' id="completeTask${task.id}" onclick="checkTaskComplition(${task.id})">Сообщить об успешном выполнении задания</button>`:''}
+    <div style='box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important; background: white; color: black; margin-bottom: 10px; margin-top: 10px; padding-left: 15px; padding-top: 10px' id="collapse${task.id}" class="collapse">
+        <p><b>Полное описание задания:</b> ${task.descriptionFull}</p>
+        <p><b>Адрес расположения задания:</b> ${task.address}</p>
+        ${task.employer.id !== parseInt(sessionStorage.getItem('userId'))? `<p><b>Заказчик:</b> ${task.employer.username}</p>`:
+            task.executor === null ? `<p><b>Пока нет исполнителя</b></p>`:
+                `<p><b>Исполнитель:</b> ${task.executor.username}</p>`}
+        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<p><b>Статус:</b> ${task.status === 'ACTIVE'? "Свободна": task.status === "PROGRESS"? 'Выполняется': 'Завершено'}</p>`:''}
+        <div style="text-align: center">
+        <button  class="button_task" id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},'${task.status}')">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Отозвать':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button>
+        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<button class="button_task" id="completeTask${task.id}" onclick="checkTaskComplition(${task.id})">Сообщить о выполнении</button>`:''}
+        </div>
     </div>
 `;
 
@@ -88,14 +90,17 @@ RequestTasks();
 
 document.querySelector("#item_my_container1").addEventListener('click', event=>{
     RequestTasks();
+    renderUserPanel(sessionStorage.getItem('userId'));
 });
 
 document.querySelector("#item_my_container2").addEventListener('click',event=>{
     RequestTasks("type=PERSONAL");
+    renderUserPanel(sessionStorage.getItem('userId'));
 });
 
 document.querySelector("#item_my_container3").addEventListener('click',event=>{
     RequestTasks("type=PUBLIC&status=PROGRESS");
+    renderUserPanel(sessionStorage.getItem('userId'));
 });
 
 const createTask = function() {

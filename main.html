@@ -7,67 +7,62 @@
             content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
     <title>Дукалис</title>
 </head>
-<body style="background: #F4984D">
+<body style="background: rgb(253, 247, 242); font-family: 'Segoe UI'">
 
-<nav class="navbar navbar-dark bg-warning">
+<nav class="navbar navbar-dark" style="background: #F4984D; margin-bottom: 10px">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-            <span class="text-light"><h2>Бюро добрых дел "Дукалис"</h2></span>
+            <span><h2 style="color: black; font-size: 30px;">Бюро добрых дел "Дукалис"</h2></span>
         </li>
     </ul>
-    <span class="navbar-text text-light" id="profile-text"></span>
 </nav>
-
-
-
-<div class="container" id="taskList">
-
-</div>
 
 <div class="container">
     <div class="row">
-        <div style="background: #F4984D;" class="col-4">
+        <div style="background: none;" class="col-12 col-md-4">
             <div class="my_container1">
-                <button id="item_my_container1">Активные задания</button>
-                <button id="item_my_container2">Мои задания</button>
-                <button id="item_my_container3">Я выполняю</button>
-                <button style="color: black;" type="button" id="item_my_container4" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">Создать задание</button>
+                <ul class="items">
+                    <li id="item_my_container1">Активные задания</li>
+                    <li id="item_my_container2">Мои задания</li>
+                    <li id="item_my_container3">Я выполняю</li>
+                </ul>
+                <button type="button" id="item_my_container4" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">Создать задание</button>
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                     <div class="modal-dialog" role="document">
-                        <div style="background: #444444" class="modal-content">
+                        <div class="modal-content form_content">
                             <div class="modal-header">
-                                <h5 style="text-align: center; color: white" class="modal-title" id="exampleModalLongTitle">Создать новое задание</h5>
+                                <h5 style="text-align: center; color: black;" class="modal-title" id="exampleModalLongTitle">Создать новое задание</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <div class="my_container">
-                                    <h5 style="text-align: center; color: white;">Название задания</h5>
-                                    <input class="pole" name="name" value="">
-                                    <h5 style="text-align: center; color: white;">Краткое описание</h5>
-                                    <input class="pole" name="descriptionShort" value="">
-                                    <h5 style="text-align: center; color: white;">Полное описание</h5>
-                                    <textarea style="height: 200px" class="pole" name="descriptionFull" value=""></textarea>
-                                    <h5 style="text-align: center; color: white;">Адрес расположения задания</h5>
-                                    <input class="pole" name="address" value="">
+                                    <h5>Краткое описание</h5>
+                                    <input class="pole shadow" name="descriptionShort" value="">
+                                    <h5>Полное описание</h5>
+                                    <textarea style="height: 200px" class="pole shadow" name="descriptionFull" value=""></textarea>
+                                    <h5>Адрес расположения задания</h5>
+                                    <input class="pole shadow" name="address" value="">
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background: red">Закрыть</button>
-                                <button type="button" class="btn btn-primary" style="background: forestgreen" onclick="createTask()">Создать</button>
+                            <div class="modal-footer" style="text-align: center">
+                                <div align="center"><button type="button" class="btn btn-primary button_create" onclick="createTask()">Создать</button></div>
+                                <div align="center"><button type="button" class="btn btn-secondary button_close" data-dismiss="modal">Закрыть</button></div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div id="block_of_profile">
+                </div>
             </div>
         </div>
-        <div style="margin-top: 10px; background: #FFE1CA;  border-radius: 25px; border: 1px solid black" class="col-8">
+        <div style="margin-top: 10px; background: none;" class="col-12 col-md-8">
             <div class="my_container2">
 
             </div>
