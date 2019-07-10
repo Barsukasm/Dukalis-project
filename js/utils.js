@@ -118,12 +118,23 @@ const getFieldData = formElement => {
 const renderUserPanel = function (userId) {
   createRequest({path: `api/v001/users/${userId}`, method: "Get"})
       .then(response =>{
-        const msgProf = `Пользователь: ${response.firstName} ${response.lastName} Карма: ${response.karma}`;
-        document.querySelector("#profile-text").innerHTML = msgProf;
+        const msgProf = `<div class="block_of_profile">
+                            <div class="text_of_profile" style="background: #F4984D; font-size: 30px; text-align: center; margin-left: 0">Профиль</div>
+                      <center><img style="margin-top: 10px; box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;" src="media/Dukalis1.jpg"></center>
+                        <p>
+                            <div class="text_of_profile" style="text-align: center"><b>Привет, </b> ${response.username}</div> 
+                            <div class="text_of_profile"><b>Имя:</b> ${response.firstName}</div> 
+                            <div class="text_of_profile"><b>Фамилия:</b> ${response.lastName}</div>
+                            <div class="text_of_profile"><b>Телефон:</b> ${response.contacts}</div>
+                            <div class="text_of_profile"><b>Возраст:</b> ${response.age}</div>
+                            <div class="text_of_profile"><b>Карма:</b> ${response.karma}</div>
+                        </p>
+                      </div>`;
+        document.querySelector("#block_of_profile").innerHTML = msgProf;
         console.log("Результат запроса юзера", response);
       })
       .catch(err=>{
-        document.querySelector("#profileBar").innerHTML = "Не удалось получить данные пользователя";
+        document.querySelector("#block_of_profile").innerHTML = "Не удалось получить данные пользователя";
         console.log("Ошибка", err);
       })
 };
