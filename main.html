@@ -13,13 +13,10 @@
 </head>
 <body style="background: rgb(253, 247, 242); font-family: 'Segoe UI'">
 
-<nav class="navbar navbar-dark" style="background: #F4984D; margin-bottom: 10px">
-    <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-            <span><h2 style="color: black; font-size: 30px;">Бюро добрых дел "Дукалис"</h2></span>
-        </li>
-    </ul>
-</nav>
+<div style="height: 60px; display: flex; flex-direction: row; margin-bottom: 17px; background: #F4984D; justify-content: center; vertical-align: center">
+    <img src="media/logo.png">
+    <p style="color: #FFE1CA; font-size: 35px; vertical-align: center; margin-top: 3px">Бюро добрых дел</p>
+</div>
 
 <div class="container">
     <div class="row">
@@ -43,17 +40,17 @@
                             </div>
                             <div class="modal-body">
                                 <div class="my_container">
-                                    <h5>Краткое описание</h5>
-                                    <input class="pole shadow" name="descriptionShort" value="">
-                                    <h5>Полное описание</h5>
-                                    <textarea style="height: 200px" class="pole shadow" name="descriptionFull" value=""></textarea>
-                                    <h5>Адрес расположения задания</h5>
-                                    <input class="pole shadow" name="address" value="">
+                                    <p class="text_modal_window">Краткое описание</p>
+                                    <input id="polefirst" class="pole shadow" name="descriptionShort" value="">
+                                    <p class="text_modal_window">Полное описание</p>
+                                    <textarea id="polesecond" style="height: 200px" class="pole shadow" name="descriptionFull" value=""></textarea>
+                                    <p class="text_modal_window">Адрес расположения задания</p>
+                                    <input id="polethird" class="pole shadow" name="address" value="">
                                 </div>
                             </div>
                             <div class="modal-footer" style="text-align: center">
                                 <div align="center"><button type="button" class="btn btn-primary button_create" onclick="createTask()">Создать</button></div>
-                                <div align="center"><button type="button" class="btn btn-secondary button_close" data-dismiss="modal">Закрыть</button></div>
+                                <div align="center"><button id="close_modal_window" type="button" class="btn btn-secondary button_close" data-dismiss="modal">Закрыть</button></div>
                             </div>
                         </div>
                     </div>

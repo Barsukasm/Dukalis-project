@@ -237,7 +237,7 @@ body {
 }
 
 .titletask {
-    height: 50px;
+    height: 40px;
     margin: 0 0 10px 0;
     transition: 0.2s;
     background: white;
@@ -255,16 +255,17 @@ body {
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
 }
 
-h5 {
+.text_modal_window {
     text-align: center;
     color: black;
+    font-size: 20px;
 }
 
 .button_task {
+    color: white;
     border: none;
-    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.175) !important;
     margin-bottom: 10px;
-    height: 50px;
+    height: 40px;
     width: 200px;
     text-align: center;
     background: #F4984D;
@@ -272,12 +273,7 @@ h5 {
 
 .button_task:hover {
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
-    background: #F4984D;
-    color: lightgray;
-}
-
-.button_task:hover {
-    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+    color: black;
 }
 
 ul.items {
@@ -334,4 +330,19 @@ ul.items li:hover {
 .text_of_profile {
     font-size: 15px;
     margin-left: 20px;
+}
+
+.button_login {
+    border: none;
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.175) !important;
+    margin-bottom: 10px;
+    height: 40px;
+    width: 200px;
+    text-align: center;
+    background: #F4984D;
+}
+
+.button_login:hover {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+    color: white;
 }

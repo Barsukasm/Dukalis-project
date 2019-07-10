@@ -118,14 +118,16 @@ const getFieldData = formElement => {
 const renderUserPanel = function (userId) {
   createRequest({path: `api/v001/users/${userId}`, method: "Get"})
       .then(response =>{
+        const stringsPhone = response.contacts.split(":");
+        const strPhone = stringsPhone[1];
         const msgProf = `<div class="block_of_profile">
-                            <div class="text_of_profile" style="background: #F4984D; font-size: 30px; text-align: center; margin-left: 0">Профиль</div>
-                      <center><img style="margin-top: 10px; box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;" src="media/Dukalis1.jpg"></center>
+                            <div class="text_of_profile" style="color: black; background: #F4984D; font-size: 28px; text-align: center; margin-left: 0">Профиль</div>
+                      <center><img style="border-radius: 20px; margin-top: 10px; box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;" src="media/Dukalis1.jpg"></center>
                         <p>
-                            <div class="text_of_profile" style="text-align: center"><b>Привет, </b> ${response.username}</div> 
+                            <div class="text_of_profile" style="text-align: center">Привет, <b>${response.username}</b></div> 
                             <div class="text_of_profile"><b>Имя:</b> ${response.firstName}</div> 
                             <div class="text_of_profile"><b>Фамилия:</b> ${response.lastName}</div>
-                            <div class="text_of_profile"><b>Телефон:</b> ${response.contacts}</div>
+                            <div class="text_of_profile"><b>Телефон:</b> ${strPhone}</div>
                             <div class="text_of_profile"><b>Возраст:</b> ${response.age}</div>
                             <div class="text_of_profile"><b>Карма:</b> ${response.karma}</div>
                         </p>
