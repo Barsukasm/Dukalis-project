@@ -4,29 +4,63 @@ window.addEventListener('load', event =>{
 });
 
 const renderTasks = task => `
-     <button class="titletask" type="button" data-toggle="collapse" data-target="#collapse${task.id}" aria-expanded="false" aria-controls="collapse${task.id}">
+     <button class="titletask shadow-sm" type="button" data-toggle="collapse" data-target="#collapse${task.id}" aria-expanded="true" aria-controls="collapse${task.id}">
         Задание: ${task.descriptionShort}     
      </button>
-    <div style='background: #FFE1CA; color: black; font-family: Fantasy; margin-left: 15px; font-size: 20px;' id="collapse${task.id}" class="collapse">
-        <p>Полное описание задания: ${task.descriptionFull}</p>
-        <p>Адрес расположения задания: ${task.address}</p>
-        ${task.employer.id != sessionStorage.getItem('userId') ? `<p>Заказчик: ${task.employer.username}</p>`:
-            task.executor === null ? `<p>Пока нет исполнителя</p>`:
-                `<p>Исполнитель: ${task.executor.username}</p>`}
-        <button style='margin: auto; text-align: center; background: green;' id="takeTask${task.id}" onclick="takeTaskFun(${task.id})">Выполнять</button>
+    <div style='box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important; background: white; color: black; margin-bottom: 10px; margin-top: 10px; padding-left: 15px; padding-top: 10px' id="collapse${task.id}" class="collapse">
+        <p><b>Полное описание задания:</b> ${task.descriptionFull}</p>
+        <p><b>Адрес расположения задания:</b> ${task.address}</p>
+        ${task.employer.id !== parseInt(sessionStorage.getItem('userId'))? `<p><b>Заказчик:</b> ${task.employer.username}</p>`:
+            task.executor === null ? `<p><b>Пока нет исполнителя</b></p>`:
+                `<p><b>Исполнитель:</b> ${task.executor.username}</p>`}
+        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<p><b>Статус:</b> ${task.status === 'ACTIVE'? "Свободна": task.status === "PROGRESS"? 'Выполняется': 'Завершено'}</p>`:''}
+        <button  class="button_task" id="takeTask${task.id}" onclick="takeTaskFun(${task.id},${task.employer.id},'${task.status}')">${task.employer.id === parseInt(sessionStorage.getItem('userId'))?'Отозвать':task.status === 'PROGRESS'? 'Отказаться':'Выполнять'}</button>
+        ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<button class="button_task" id="completeTask${task.id}" onclick="checkTaskComplition(${task.id})">Сообщить о выполнении</button>`:''}
     </div>
 `;
 
-
-const takeTaskFun = function (taskId) {
-    createRequest({path:`api/v001/tasks/${taskId}/apply`, method: "GET"})
+const checkTaskComplition = function (taskId) {
+    createRequest({path:`api/v001/tasks/${taskId}/complete`, method: "GET"})
         .then(response=>{
-            document.querySelector(`#takeTask${taskId}`).innerHTML = 'Принято на выполнение';
+            document.querySelector(`#completeTask${taskId}`).innerHTML = 'Задание выполнено';
         })
         .catch(err=>{
-            document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось принять задание';
+            document.querySelector(`#completeTask${taskId}`).innerHTML = 'Не удалось отметить задание выполненым';
             console.log("Не удалось принять задание", err);
-        })
+        });
+};
+
+
+const takeTaskFun = function (taskId,taskOwner, taskStatus) {
+    if (taskOwner === parseInt(sessionStorage.getItem('userId'))){
+        createRequest({path:`api/v001/tasks/${taskId}/cancel`, method: "GET"})
+            .then(response=>{
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Задание отозвано';
+            })
+            .catch(err=>{
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось отозвать задание';
+                console.log("Не удалось принять задание", err);
+            })
+    } else if (taskStatus === "PROGRESS"){
+        createRequest({path:`api/v001/tasks/${taskId}/cancel`, method: "GET"})
+            .then(response=>{
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Задание о отменено';
+            })
+            .catch(err=>{
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось отменить задание';
+                console.log("Не удалось принять задание", err);
+            })
+    } else {
+        createRequest({path:`api/v001/tasks/${taskId}/apply`, method: "GET"})
+            .then(response=>{
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Принято на выполнение';
+            })
+            .catch(err=>{
+                document.querySelector(`#takeTask${taskId}`).innerHTML = 'Не удалось взять задание на выполнение';
+                console.log("Не удалось принять задание", err);
+            })
+    }
+
 };
 
 
@@ -49,22 +83,6 @@ const RequestTasks = function(qParams) {
 };
 
 
-const RequestTasksTmp = function(qParams) {
-    qPath = `api/v001/tasks`;
-    fullPath = "";
-    if (qParams === undefined) fullPath = qPath;
-    else fullPath = qPath + '?' + qParams;
-    createRequest({path: fullPath, method: "GET"})
-        .then(response => {
-            document.querySelector(".my_container2").innerHTML = response
-                .map(renderTasks)
-                .join("");
-            console.log("Результат запроса заданий", response);
-        })
-        .catch(err => {
-            console.log(err);
-        })
-};
 
 RequestTasks();
 
@@ -90,7 +108,7 @@ const createTask = function() {
             const newTask={
                 "address": document.querySelector('input[name=address]').value,
                 "createdDateTime": createdDateTime,
-                "descriptionFull": document.querySelector('input[name=descriptionFull]').value,
+                "descriptionFull": document.querySelector('textarea[name=descriptionFull]').value,
                 "descriptionShort": document.querySelector('input[name=descriptionShort]').value,
                 "employer": {
                     "age": response.age,
