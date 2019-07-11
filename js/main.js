@@ -160,7 +160,59 @@ const createTask = function() {
         })
         .catch(err => {
             console.log(err);
-        })
+        });
     document.querySelector("#close_modal_window").click();
     RequestTasks();
 };
+
+
+ymaps.ready(init);
+
+function init() {
+    var geolocation = ymaps.geolocation,
+        myMap = new ymaps.Map('map', {
+            center: [55, 34],
+            zoom: 10
+        }, {
+            searchControlProvider: 'yandex#search'
+        });
+
+    geolocation.get({
+        provider: 'browser',
+        mapStateAutoApply: true
+    }).then(function (result) {
+        // Синим цветом пометим положение, полученное через браузер.
+        // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
+        result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+        myMap.geoObjects.add(result.geoObjects);
+        console.log("Координаты юзера: ", result.geoObjects.get(0).geometry.getCoordinates());
+    });
+}
+
+
+//метод для размещения маркеров с задачами на карте
+
+//Добавление карты в форму создания заявки
+ymaps.ready(initModalMap);
+
+function initModalMap(){
+    var geolocation = ymaps.geolocation,
+        myMap = new ymaps.Map('mapModal', {
+            center: [55, 34],
+            zoom: 10
+        }, {
+            searchControlProvider: 'yandex#search'
+        });
+
+    geolocation.get({
+        provider: 'browser',
+        mapStateAutoApply: true
+    }).then(function (result) {
+        // Синим цветом пометим положение, полученное через браузер.
+        // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
+        result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+        myMap.geoObjects.add(result.geoObjects);
+    });
+
+
+}
