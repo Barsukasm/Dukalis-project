@@ -1,6 +1,9 @@
 window.addEventListener('load', event =>{
     renderUserPanel(sessionStorage.getItem('userId'));
     console.log(sessionStorage.getItem('userId'));
+    if(sessionStorage.length == 0) {
+        window.location.href = `${window.location.origin}/index.html`;
+    }
 });
 
 const renderTasks = task => `
@@ -189,12 +192,8 @@ function init() {
     });
 }
 
-
-//метод для размещения маркеров с задачами на карте
-
-//Добавление карты в форму создания заявки
 ymaps.ready(initModalMap);
-
+//метод для размещения маркеров с задачами на карте
 function initModalMap(){
     var geolocation = ymaps.geolocation,
         myMap = new ymaps.Map('mapModal', {
@@ -213,6 +212,10 @@ function initModalMap(){
         result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
         myMap.geoObjects.add(result.geoObjects);
     });
+}
+initModalMap();
 
-
+const exitProfile = function() {
+    window.location.href = `${window.location.origin}/index.html`;
+    sessionStorage.clear();
 }
