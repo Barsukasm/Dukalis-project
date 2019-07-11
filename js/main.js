@@ -4,6 +4,7 @@ window.addEventListener('load', event =>{
     if(sessionStorage.length == 0) {
         window.location.href = `${window.location.origin}/index.html`;
     }
+    myUserMap.events.fire('click');
 });
 
 const renderTasks = task => `
@@ -85,7 +86,9 @@ const takeTaskFun = function (taskId,taskOwner, taskStatus) {
 
 };
 
-
+//Текущий список заданий - нужен для отображения маркеров на яндекс-картах
+let taskList;
+let myUserMap;
 //Нажатие на таб qParams - параметры запроса, например "type=PUBLIC&status=PROGRESS"
 const RequestTasks = function(qParams) {
     qPath = `api/v001/tasks`;
@@ -98,10 +101,14 @@ const RequestTasks = function(qParams) {
                 .map(renderTasks)
                 .join("");
             console.log("Результат запроса заданий", response);
+            taskList = response;
+            if (myUserMap !== undefined){
+                myUserMap.events.fire('click');
+            }
         })
         .catch(err => {
             console.log(err);
-        })
+        });
 };
 
 
@@ -125,6 +132,7 @@ document.querySelector("#item_my_container3").addEventListener('click',event=>{
 
 const createTask = function() {
     const currentUserId=sessionStorage.getItem('userId');
+    let coordsMem = coords;
     createRequest({path:`api/v001/users/${currentUserId}`, method: "GET"})
         .then(response => {
             const createdDateTime = parseInt(+new Date()*1);
@@ -151,7 +159,8 @@ const createTask = function() {
                 "executor": null,
                 "id": 140,
                 "status": "ACTIVE",
-                "updatedDateTime": updatedDateTime
+                "updatedDateTime": updatedDateTime,
+                "pointOnMap": coordsMem.join(',')
             };
             createRequest({path:`api/v001/tasks`, method: "POST"}, queryOptions, newTask)
                 .then(response => {
@@ -169,12 +178,19 @@ const createTask = function() {
 };
 
 
+document.querySelector("#close_modal_window").addEventListener('click', e =>{
+     coords = null;
+     console.log('Значение coords после закрытия модального диалога:', coords);
+});
+
 ymaps.ready(init);
 
+
+
 function init() {
-    var geolocation = ymaps.geolocation,
-        myMap = new ymaps.Map('map', {
-            center: [55, 34],
+    let geolocation = ymaps.geolocation;
+    myUserMap = new ymaps.Map('map', {
+            center: [55, 83],
             zoom: 10
         }, {
             searchControlProvider: 'yandex#search'
@@ -187,17 +203,44 @@ function init() {
         // Синим цветом пометим положение, полученное через браузер.
         // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
         result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
-        myMap.geoObjects.add(result.geoObjects);
-        console.log("Координаты юзера: ", result.geoObjects.get(0).geometry.getCoordinates());
+        myUserMap.geoObjects.add(result.geoObjects);
+    });
+
+    myUserMap.events.add('click', e =>{
+         if (taskList !== undefined){
+             let userCoords = myUserMap.geoObjects.get(0);
+             myUserMap.geoObjects.removeAll();
+             myUserMap.geoObjects.add(userCoords);
+             taskList.map( task => {
+                 if (task.pointOnMap !== null){
+                     let point = task.pointOnMap.split(',');
+                     point.forEach(el => {
+                         parseInt(el);
+                     });
+                     let geoObj = new ymaps.Placemark(point, {
+                         balloonContent: task.descriptionShort
+                     }, {
+                         preset: 'islands#icon',
+                         iconColor: '#0095b6'
+                     });
+
+                     myUserMap.geoObjects.add(geoObj);
+                 }
+             });
+         }
     });
 }
 
 ymaps.ready(initModalMap);
+
+//Переменная, хранящяя результаты клика по карте, значение переводится в null после создания задания,
+//либо после клика по кнопке отмена
+let coords = null;
 //метод для размещения маркеров с задачами на карте
 function initModalMap(){
-    var geolocation = ymaps.geolocation,
+    let geolocation = ymaps.geolocation,
         myMap = new ymaps.Map('mapModal', {
-            center: [55, 34],
+            center: [55, 83],
             zoom: 10
         }, {
             searchControlProvider: 'yandex#search'
@@ -206,16 +249,28 @@ function initModalMap(){
     geolocation.get({
         provider: 'browser',
         mapStateAutoApply: true
-    }).then(function (result) {
-        // Синим цветом пометим положение, полученное через браузер.
-        // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
-        result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
-        myMap.geoObjects.add(result.geoObjects);
+    });
+
+
+
+    myMap.events.add('click', e => {
+        coords = e.get('coords');
+        console.log(coords);
+        let geoObj = new ymaps.Placemark(coords, {
+            balloonContent: 'Координаты вашего задания'
+        }, {
+            preset: 'islands#icon',
+            iconColor: '#0095b6'
+        });
+        if (myMap.geoObjects.getLength() >= 1){
+            myMap.geoObjects.removeAll();
+        }
+        myMap.geoObjects.add(geoObj);
     });
 }
-initModalMap();
+
 
 const exitProfile = function() {
     window.location.href = `${window.location.origin}/index.html`;
     sessionStorage.clear();
-}
+};
