@@ -186,7 +186,7 @@ body {
 }
 
 .my_container1 {
-    margin-top: 15px;
+    margin-top: 10px;
     display: flex;
     flex-flow: column wrap;
     justify-content: flex-start;
@@ -301,12 +301,12 @@ ul.items li:hover {
 .block_of_profile {
     margin-top: 15px;
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
-    height: 430px;
+    height: 470px;
 }
 
 .button_create {
     background: #F4984D !important;
-    color: black !important;
+    color: white !important;
     text-align: center !important;
     width: 150px !important;
     height: 50px !important;
@@ -325,6 +325,23 @@ ul.items li:hover {
     width: 150px !important;
     height: 50px !important;
     border: none;
+}
+
+.button_exit {
+    background: #E5603C !important;
+    color: #FFE1CA !important;
+    text-align: center !important;
+    width: 150px !important;
+    height: 40px !important;
+    border: none;
+}
+
+.button_close:hover {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+.button_exit:hover {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
 }
 
 .text_of_profile {
