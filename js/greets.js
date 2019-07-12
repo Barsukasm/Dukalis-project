@@ -2,7 +2,7 @@ document.querySelector("#inButton").addEventListener('click', evt => {
     evt.preventDefault();
     const login = document.querySelector("#inputName").value;
 
-    createRequest({path:`api/v001/users/auth/${login}`, method: "GET"})
+    createRequest({path:`/v001/users/auth/${login}`, method: "GET"})
         .then(response => {
             sessionStorage.setItem("userId", response.id);
             window.location.href = `${window.location.origin}/main.html`;

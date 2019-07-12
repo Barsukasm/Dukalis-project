@@ -412,6 +412,7 @@ ul.items li:hover {
 }
 
 label {
+    border: 1px;
     display: inline-block;
     cursor: pointer;
     position: relative;

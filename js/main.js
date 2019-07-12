@@ -43,7 +43,7 @@ const createTaskButt = task => {
 };
 
 const checkTaskComplition = function (taskId) {
-    createRequest({path:`api/v001/tasks/${taskId}/complete`, method: "GET"})
+    createRequest({path:`/v001/tasks/${taskId}/complete`, method: "GET"})
         .then(response=>{
             document.querySelector(`#completeTask${taskId}`).innerHTML = 'Задание выполнено';
         })
@@ -56,7 +56,7 @@ const checkTaskComplition = function (taskId) {
 
 const takeTaskFun = function (taskId,taskOwner, taskStatus) {
     if (taskOwner === parseInt(sessionStorage.getItem('userId'))){
-        createRequest({path:`api/v001/tasks/${taskId}/complain`, method: "GET"})
+        createRequest({path:`/v001/tasks/${taskId}/complain`, method: "GET"})
             .then(response=>{
                 document.querySelector(`#takeTask${taskId}`).innerHTML = 'Жалоба принята';
             })
@@ -65,7 +65,7 @@ const takeTaskFun = function (taskId,taskOwner, taskStatus) {
                 console.log("Не удалось принять задание", err);
             })
     } else if (taskStatus === "PROGRESS"){
-        createRequest({path:`api/v001/tasks/${taskId}/cancel`, method: "GET"})
+        createRequest({path:`/v001/tasks/${taskId}/cancel`, method: "GET"})
             .then(response=>{
                 document.querySelector(`#takeTask${taskId}`).innerHTML = 'Задание о отменено';
             })
@@ -74,7 +74,7 @@ const takeTaskFun = function (taskId,taskOwner, taskStatus) {
                 console.log("Не удалось принять задание", err);
             })
     } else {
-        createRequest({path:`api/v001/tasks/${taskId}/apply`, method: "GET"})
+        createRequest({path:`/v001/tasks/${taskId}/apply`, method: "GET"})
             .then(response=>{
                 document.querySelector(`#takeTask${taskId}`).innerHTML = 'Принято на выполнение';
             })
@@ -91,7 +91,7 @@ let taskList;
 let myUserMap;
 //Нажатие на таб qParams - параметры запроса, например "type=PUBLIC&status=PROGRESS"
 const RequestTasks = function(qParams) {
-    qPath = `api/v001/tasks`;
+    qPath = `/v001/tasks`;
     fullPath = "";
     if (qParams === undefined) fullPath = qPath;
     else fullPath = qPath + '?' + qParams;
@@ -136,7 +136,7 @@ document.querySelector("#item_my_container3").addEventListener('click',event=>{
 const createTask = function() {
     const currentUserId=sessionStorage.getItem('userId');
     let coordsMem = coords;
-    createRequest({path:`api/v001/users/${currentUserId}`, method: "GET"})
+    createRequest({path:`/v001/users/${currentUserId}`, method: "GET"})
         .then(response => {
             const createdDateTime = parseInt(+new Date()*1);
             const updatedDateTime = parseInt(+new Date()*1);
@@ -166,7 +166,7 @@ const createTask = function() {
                 "pointOnMap": coordsMem.join(','),
                 "type": "SOCIAL"
             };
-            createRequest({path:`api/v001/tasks`, method: "POST"}, queryOptions, newTask)
+            createRequest({path:`/v001/tasks`, method: "POST"}, queryOptions, newTask)
                 .then(response => {
                     console.log("Ответ: ", response);
                 })

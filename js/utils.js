@@ -116,7 +116,7 @@ const getFieldData = formElement => {
 //Мои функции
 
 const renderUserPanel = function (userId) {
-  createRequest({path: `api/v001/users/${userId}`, method: "Get"})
+  createRequest({path: `/v001/users/${userId}`, method: "Get"})
       .then(response =>{
         const msgProf = `<div class="block_of_profile">
                             <div class="text_of_profile" style="color: #FFE1CA; background: #F4984D; font-size: 28px; text-align: center; margin-left: 0">Профиль</div>
