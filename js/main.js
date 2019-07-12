@@ -223,7 +223,7 @@ const selectSortType = event=>{
             document.querySelector("#titlePage").innerHTML = 'Доступные задания';
             break;
         case 4:
-            RequestTasks(`peopleCoordinate=${userCoordsTmp.join(',')}&type=PUBLIC&status=ACTIVE`);
+            RequestTasks(`type=PUBLIC&status=ACTIVE&peopleCoordinate=${userCoordsTmp.join(',')}`);
             renderUserPanel(sessionStorage.getItem('userId'));
             document.querySelector("#titlePage").innerHTML = 'Доступные задания';
             break;
