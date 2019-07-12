@@ -1,4 +1,5 @@
 //https://dukalis.testsitesrv.ru
+//https://dukalis.fun/api
 
 const compileUrl = (url, params) => {
   const resultArr = [];

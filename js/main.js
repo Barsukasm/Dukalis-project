@@ -276,6 +276,7 @@ const createTask = function() {
             createRequest({path:`/v001/tasks`, method: "POST"}, queryOptions, newTask)
                 .then(response => {
                     console.log("Ответ: ", response);
+                    document.querySelector("#item_my_container2").click();
                     document.querySelector("#close_modal_window").click();
                 })
                 .catch(err => {
@@ -287,7 +288,7 @@ const createTask = function() {
             console.log(err);
         });
 
-    RequestTasks();
+
 };
 
 
