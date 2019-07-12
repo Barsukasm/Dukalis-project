@@ -5,7 +5,7 @@ document.querySelector("#inButton").addEventListener('click', evt => {
     createRequest({path:`/v001/users/auth/${login}`, method: "GET"})
         .then(response => {
             sessionStorage.setItem("userId", response.id);
-            window.location.href = `${window.location.origin}/main.html`;
+            window.location.href = `../index.html`;
             console.log(sessionStorage.getItem('userId'));
         })
         .catch(err => {

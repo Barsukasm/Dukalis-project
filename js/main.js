@@ -2,8 +2,9 @@
 window.addEventListener('load', event =>{
     renderUserPanel(sessionStorage.getItem('userId'));
     console.log(sessionStorage.getItem('userId'));
+
     if(sessionStorage.length == 0) {
-        window.location.href = `${window.location.origin}/index.html`;
+        window.location.href = `../login.html`;
     }
 
     if (taskList !== undefined && myUserMap !== undefined){
@@ -19,6 +20,7 @@ const renderTasks = task => `
     <div style='box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important; background: white; color: black; margin-bottom: 10px; margin-top: 2px; padding-left: 15px; padding-top: 10px' id="collapse${task.id}" class="collapse">
         <p><b>Полное описание задания:</b> ${task.descriptionFull}</p>
         <p><b>Адрес расположения задания:</b> ${task.address}</p>
+        <p id="distMarker${task.id}"></p>
         ${task.employer.id !== parseInt(sessionStorage.getItem('userId'))? `<p><b>Логин: </b> ${task.employer.username}</p><div style="display: flex; justify-content: space-between; margin-bottom: 10px; "><span><b>Имя:</b> ${task.employer.firstName}</span> <span> <b>Фамилия:</b> ${task.employer.lastName}</span> <span style="margin-right: 10px;"><b>Телефон:</b> ${task.employer.contacts}</span></div>`:
             task.executor === null ? `<p><b>Пока нет исполнителя</b></p>`:
                 `<p><b>Исполнитель:</b> ${task.executor.username}</p>`}
@@ -125,12 +127,13 @@ const RequestTasks = function(qParams) {
             taskList = response;
             if (myUserMap !== undefined){
                 myUserMap.events.fire('click');
-                console.log('Ивент карты выстрелил');
             } else {
                 ymaps.ready(()=>{
                     init('click');
                 });
             }
+            //Расстояние до юзера вычисляем только после того, как получили список задач и юзера
+            distanceWrapper();
         })
         .catch(err => {
             console.log(err);
@@ -138,9 +141,17 @@ const RequestTasks = function(qParams) {
 };
 
 
-
+const renderSort = () =>`Сортировать:
+                <select id="sortSelector" onchange="selectSortType()">
+                    <option selected value="1">по умолчанию</option>
+                    <option value="2">только социальные</option>
+                    <option value="3">только личные</option>
+                    <option value="4">ближайшие</option>
+                </select>`;
 
 RequestTasks();
+document.querySelector("#sortSelect").innerHTML = renderSort();
+document.querySelector("#sortSelect").removeAttribute("hidden");
 
 const RequestTransactions = function(qParams) {
     qPath = `/v001/transactions`;
@@ -164,25 +175,65 @@ document.querySelector("#item_my_container1").addEventListener('click', event=>{
     RequestTasks();
     renderUserPanel(sessionStorage.getItem('userId'));
     document.querySelector("#titlePage").innerHTML = 'Доступные задания';
+    document.querySelector("#sortSelect").innerHTML = renderSort();
+    document.querySelector("#sortSelect").removeAttribute("hidden");
 });
 
 document.querySelector("#item_my_container2").addEventListener('click',event=>{
     RequestTasks("type=PERSONAL");
     renderUserPanel(sessionStorage.getItem('userId'));
     document.querySelector("#titlePage").innerHTML = 'Мои задания';
+    document.querySelector("#sortSelect").innerHTML = "";
+    document.querySelector("#sortSelect").setAttribute("hidden", '');
 });
 
 document.querySelector("#item_my_container3").addEventListener('click',event=>{
     RequestTasks("type=PUBLIC&status=PROGRESS");
     renderUserPanel(sessionStorage.getItem('userId'));
     document.querySelector("#titlePage").innerHTML = 'Я выполняю';
+    document.querySelector("#sortSelect").innerHTML = "";
+    document.querySelector("#sortSelect").setAttribute("hidden", '');
 });
 
 document.querySelector("#item_my_container5").addEventListener('click',event=>{
     RequestTransactions();
     renderUserPanel(sessionStorage.getItem('userId'));
     document.querySelector("#titlePage").innerHTML = 'История транзакций';
+    document.querySelector("#sortSelect").innerHTML = "";
+    document.querySelector("#sortSelect").setAttribute("hidden", '');
 });
+
+const selectSortType = event=>{
+    const selectedVal = parseInt(document.querySelector("#sortSelector").value);
+    console.log('Сортировка', selectedVal);
+    switch (selectedVal) {
+        case 1:
+            RequestTasks();
+            renderUserPanel(sessionStorage.getItem('userId'));
+            document.querySelector("#titlePage").innerHTML = 'Доступные задания';
+            break;
+        case 2:
+            RequestTasks("category=SOCIAL&type=PUBLIC&status=ACTIVE");
+            renderUserPanel(sessionStorage.getItem('userId'));
+            document.querySelector("#titlePage").innerHTML = 'Доступные задания';
+            break;
+        case 3:
+            RequestTasks("category=PRIVATE&type=PUBLIC&status=ACTIVE");
+            renderUserPanel(sessionStorage.getItem('userId'));
+            document.querySelector("#titlePage").innerHTML = 'Доступные задания';
+            break;
+        case 4:
+            RequestTasks(`peopleCoordinate=${userCoordsTmp.join(',')}&type=PUBLIC&status=ACTIVE`);
+            renderUserPanel(sessionStorage.getItem('userId'));
+            document.querySelector("#titlePage").innerHTML = 'Доступные задания';
+            break;
+        default:
+            break;
+    }
+};
+
+
+
 
 const createTask = function() {
     const currentUserId=sessionStorage.getItem('userId');
@@ -218,10 +269,7 @@ const createTask = function() {
                 "type": "SOCIAL",
                 "price": document.querySelector('#polePrice') === null? 0: document.querySelector('#polePrice').value
             };
-            document.querySelector('input[name=address]').value = "";
-            document.querySelector('textarea[name=descriptionFull]').value = "";
-            document.querySelector('input[name=descriptionShort]').value = "";
-            document.querySelector('#polePrice').value = "";
+
             if (myUserMap !== undefined) {
                 myUserMap.geoObjects.removeAll();
             }
@@ -242,8 +290,15 @@ const createTask = function() {
     RequestTasks();
 };
 
-document.querySelector('#item_my_container4').addEventListener('close',e=>{
+
+$("#exampleModalLong").on('hide.bs.modal',e=>{
     RequestTasks();
+    document.querySelector('input[name=address]').value = "";
+    document.querySelector('textarea[name=descriptionFull]').value = "";
+    document.querySelector('input[name=descriptionShort]').value = "";
+    if (document.querySelector('#polePrice') !== null){
+        document.querySelector('#polePrice').value = "";
+    }
 });
 
 document.querySelector("#close_modal_window").addEventListener('click', e =>{
@@ -251,7 +306,8 @@ document.querySelector("#close_modal_window").addEventListener('click', e =>{
      console.log('Значение coords после закрытия модального диалога:', coords);
 });
 
-
+//Здесь временно хранятся координаты юзера для подсчета расстояния от юзера до задания
+let userCoordsTmp;
 
 
 
@@ -273,6 +329,9 @@ function init(toFire) {
         result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
         myUserMap.geoObjects.add(result.geoObjects);
         console.log('Координаты юзера',result.geoObjects.get(0).geometry.getCoordinates());
+        userCoordsTmp = result.geoObjects.get(0).geometry.getCoordinates();
+        //На случай, если получим координаты юзера, после списка всех задач
+        distanceWrapper();
     }).catch(err=>{
         console.log('Ошибка поиска координат юзера: ', err);
     });
@@ -356,7 +415,7 @@ function initModalMap(){
 
 
 const exitProfile = function() {
-    window.location.href = `${window.location.origin}/index.html`;
+    window.location.href = `../login.html`;
     sessionStorage.clear();
 };
 
@@ -368,4 +427,45 @@ const renderPrice = function() {
 
 const removePrice = function() {
     document.querySelector("#priceContainer").innerHTML='';
+};
+
+const distanceWrapper = () =>{
+    if (taskList !== undefined && userCoordsTmp !== undefined){
+        taskList.map(task => {
+            if (task.pointOnMap !== null){
+                point = task.pointOnMap.split(',');
+                point.forEach(el=>{
+                    parseInt(el);
+                });
+                let d = distance(userCoordsTmp[0],userCoordsTmp[1],point[0],point[1]);
+                document.querySelector(`#distMarker${task.id}`).innerHTML = `<b>Расстояние до вас: </b> ${d} м`;
+            }
+        });
+    }
+};
+
+const distance = function(latitude1, longitude1, latitude2, longitude2) {
+    var EATH_RADIUS = 6372795;
+    var lat1 = latitude1 * Math.PI / 180.0;
+    var lat2 = latitude2 * Math.PI / 180.0;
+    var long1 = longitude1 * Math.PI / 180.0;
+    var long2 = longitude2 * Math.PI / 180.0;
+
+    var cl1 = Math.cos(lat1);
+    var cl2 = Math.cos(lat2);
+    var sl1 = Math.sin(lat1);
+    var sl2 = Math.sin(lat2);
+
+    var delta = long2 - long1;
+    var cdelta = Math.cos(delta);
+    var sdelta = Math.sin(delta);
+
+    var y = Math.sqrt(Math.pow(cl2 * sdelta, 2) + Math.pow(cl1 * sl2 - sl1 * cl2 * cdelta, 2));
+    var x = sl1 * sl2 + cl1 * cl2 * cdelta;
+
+
+    var ad = Math.atan2(y,x);
+    var dist = Math.ceil(ad * EATH_RADIUS);
+
+    return dist;
 };
