@@ -227,6 +227,7 @@ body {
 }
 
 .pole {
+    width: auto;
     border: none;
     padding: 0px 0px 0px 10px;
     color: black;
@@ -247,6 +248,18 @@ body {
 .titletask:hover {
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
     background: #F4984D;
+}
+
+.titlePage {
+    font-size: 25px;
+    vertical-align: auto;
+    height: 40px;
+    margin: 0 0 10px 0;
+    transition: 0.2s;
+    background: #E5603C;
+    color: white;
+    border: none;
+    text-align: center;
 }
 
 .form_content {
@@ -396,4 +409,48 @@ ul.items li:hover {
         padding: 0;
         margin: 0;
     }
+}
+
+label {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    padding-left: 35px;
+    padding-right: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+
+input[type=radio] {
+    display: none;
+}
+
+
+label:before {
+    content: "";
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin-right: 25px;
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    background-color: #F4984D;
+    box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+}
+
+
+.radio label:before {
+    border-radius: 16px;
+}
+
+
+input[type=radio]:checked + label:before {
+    content: "\2022";
+    color: #FFE1CA;
+    font-size: 62px;
+    text-align: center;
+    line-height: 22px;
 }
