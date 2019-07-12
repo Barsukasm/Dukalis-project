@@ -227,7 +227,7 @@ body {
 }
 
 .pole {
-    width: auto;
+    width: 100%;
     border: none;
     padding: 0px 0px 0px 10px;
     color: black;
@@ -314,7 +314,7 @@ ul.items li:hover {
 .block_of_profile {
     margin-top: 15px;
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
-    height: 470px;
+    height: auto;
 }
 
 .button_create {
@@ -347,6 +347,7 @@ ul.items li:hover {
     width: 150px !important;
     height: 40px !important;
     border: none;
+    margin: 15px;
 }
 
 .button_close:hover {
@@ -383,6 +384,7 @@ ul.items li:hover {
     height: 100%;
     padding: 0;
     margin: 0;
+    margin-top: 15px!important;
 }
 
 

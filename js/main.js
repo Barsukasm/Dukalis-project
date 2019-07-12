@@ -164,7 +164,8 @@ const createTask = function() {
                 "status": "ACTIVE",
                 "updatedDateTime": updatedDateTime,
                 "pointOnMap": coordsMem.join(','),
-                "type": "SOCIAL"
+                "type": "SOCIAL",
+                "price": document.querySelector('#polePrice') === null? 0: document.querySelector('#polePrice').value
             };
             createRequest({path:`/v001/tasks`, method: "POST"}, queryOptions, newTask)
                 .then(response => {
@@ -173,6 +174,7 @@ const createTask = function() {
                 })
                 .catch(err => {
                     console.log(err);
+                    alert('Невозможно создать заявку!');
                 })
         })
         .catch(err => {
@@ -182,6 +184,9 @@ const createTask = function() {
     RequestTasks();
 };
 
+document.querySelector('#item_my_container4').addEventListener('close',e=>{
+    RequestTasks();
+});
 
 document.querySelector("#close_modal_window").addEventListener('click', e =>{
      coords = null;
@@ -209,6 +214,9 @@ function init() {
         // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
         result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
         myUserMap.geoObjects.add(result.geoObjects);
+        console.log('Координаты юзера',result.geoObjects.get(0).geometry.getCoordinates());
+    }).catch(err=>{
+        console.log('Ошибка поиска координат юзера: ', err);
     });
 
     myUserMap.events.add('click', e =>{
@@ -254,6 +262,8 @@ function initModalMap(){
     geolocation.get({
         provider: 'browser',
         mapStateAutoApply: true
+    }).then(response => {
+        myMap.setCenter(response.geoObjects.get(0).geometry());
     });
 
 
@@ -271,12 +281,13 @@ function initModalMap(){
             myMap.geoObjects.removeAll();
         }
         myMap.geoObjects.add(geoObj);
-        createRequestWithDefaultHeader({path:`https://geocode-maps.yandex.ru/1.x/?apikey=1c06cba9-a122-4f84-80a1-22488eec7552&geocode=${coords[0]},${coords[1]}&format=json`, method:'GET'})
-            .then(response=>{
-                console.log(response);
+        ymaps.geocode(coords)
+            .then(res=>{
+                document.querySelector('#polethird').value = res.geoObjects.get(0).properties.get('text');
+                console.log('Результаты обратного геокодирования ',res.geoObjects.get(0).properties.get('text'));
             })
             .catch(err=>{
-                console.log('Не удалось запросить адрес пользователя по координатам ',err);
+                console.log('Ошибка геокодирования: ', err);
             });
     });
 }
