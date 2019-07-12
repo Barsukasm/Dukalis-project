@@ -25,6 +25,22 @@ const renderTasks = task => `
     </div>
 `;
 
+const secToDate = function(seconds) {
+    const date = new Date(seconds);
+    return date;
+};
+
+const renderTransactions = task => `
+    <button class="titletask shadow-sm" type="button" data-toggle="collapse" data-target="#collapse${task.id}" aria-expanded="true" aria-controls="collapse${task.id}">
+    Транзакция #${task.id}
+    </button>
+    <div style='box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important; background: white; color: black; margin-bottom: 10px; margin-top: 2px; padding-left: 15px; padding-top: 10px' id="collapse${task.id}" class="collapse">
+        <p><b>Комментарий:</b> ${task.comment}</p>
+        <p><b>Стоимость:</b> ${task.amount}</p>
+        <p><b>Дата операции: </b>${secToDate(task.dateOperation)}</p>
+    </div>
+`;
+
 
 const createTaskButt = task => {
     if (task.employer.id === parseInt(sessionStorage.getItem('userId'))){
@@ -115,6 +131,24 @@ const RequestTasks = function(qParams) {
 
 RequestTasks();
 
+const RequestTransactions = function(qParams) {
+    qPath = `/v001/transactions`;
+    fullPath = "";
+    if (qParams === undefined) fullPath = qPath;
+    else fullPath = qPath + '?' + qParams;
+    createRequest({path: fullPath, method: "GET"})
+        .then(response => {
+            document.querySelector(".my_container2").innerHTML = response
+                .map(renderTransactions)
+                .join("");
+            console.log("Результат запроса транзакций", response);
+            taskList = response;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
 document.querySelector("#item_my_container1").addEventListener('click', event=>{
     RequestTasks();
     renderUserPanel(sessionStorage.getItem('userId'));
@@ -131,6 +165,12 @@ document.querySelector("#item_my_container3").addEventListener('click',event=>{
     RequestTasks("type=PUBLIC&status=PROGRESS");
     renderUserPanel(sessionStorage.getItem('userId'));
     document.querySelector("#titlePage").innerHTML = 'Я выполняю';
+});
+
+document.querySelector("#item_my_container5").addEventListener('click',event=>{
+    RequestTransactions();
+    renderUserPanel(sessionStorage.getItem('userId'));
+    document.querySelector("#titlePage").innerHTML = 'История транзакций';
 });
 
 const createTask = function() {
