@@ -251,10 +251,9 @@ body {
 }
 
 .titlePage {
-    font-size: 25px;
-    vertical-align: auto;
+    font-size: 20px;
     height: 40px;
-    margin: 0 0 10px 0;
+    margin-bottom: 10px;
     transition: 0.2s;
     background: #E5603C;
     color: white;
