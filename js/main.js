@@ -14,7 +14,7 @@ const renderTasks = task => `
     <div style='box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important; background: white; color: black; margin-bottom: 10px; margin-top: 2px; padding-left: 15px; padding-top: 10px' id="collapse${task.id}" class="collapse">
         <p><b>Полное описание задания:</b> ${task.descriptionFull}</p>
         <p><b>Адрес расположения задания:</b> ${task.address}</p>
-        ${task.employer.id !== parseInt(sessionStorage.getItem('userId'))? `<p><b>Заказчик:</b> ${task.employer.username}</p>`:
+        ${task.employer.id !== parseInt(sessionStorage.getItem('userId'))? `<p><b>Логин: </b> ${task.employer.username}</p><div style="display: flex; justify-content: space-between; margin-bottom: 10px; "><span><b>Имя:</b> ${task.employer.firstName}</span> <span> <b>Фамилия:</b> ${task.employer.lastName}</span> <span style="margin-right: 10px;"><b>Телефон:</b> ${task.employer.contacts}</span></div>`:
             task.executor === null ? `<p><b>Пока нет исполнителя</b></p>`:
                 `<p><b>Исполнитель:</b> ${task.executor.username}</p>`}
         ${task.employer.id === parseInt(sessionStorage.getItem('userId'))? `<p><b>Статус:</b> ${task.status === 'ACTIVE'? "Свободна": task.status === "PROGRESS"? 'Выполняется': 'Завершено'}</p>`:''}
@@ -118,16 +118,19 @@ RequestTasks();
 document.querySelector("#item_my_container1").addEventListener('click', event=>{
     RequestTasks();
     renderUserPanel(sessionStorage.getItem('userId'));
+    document.querySelector("#titlePage").innerHTML = 'Активные задания';
 });
 
 document.querySelector("#item_my_container2").addEventListener('click',event=>{
     RequestTasks("type=PERSONAL");
     renderUserPanel(sessionStorage.getItem('userId'));
+    document.querySelector("#titlePage").innerHTML = 'Мои задания';
 });
 
 document.querySelector("#item_my_container3").addEventListener('click',event=>{
     RequestTasks("type=PUBLIC&status=PROGRESS");
     renderUserPanel(sessionStorage.getItem('userId'));
+    document.querySelector("#titlePage").innerHTML = 'Я выполняю';
 });
 
 const createTask = function() {
@@ -160,7 +163,8 @@ const createTask = function() {
                 "id": 140,
                 "status": "ACTIVE",
                 "updatedDateTime": updatedDateTime,
-                "pointOnMap": coordsMem.join(',')
+                "pointOnMap": coordsMem.join(','),
+                "type": "SOCIAL"
             };
             createRequest({path:`api/v001/tasks`, method: "POST"}, queryOptions, newTask)
                 .then(response => {
@@ -275,3 +279,13 @@ const exitProfile = function() {
     window.location.href = `${window.location.origin}/index.html`;
     sessionStorage.clear();
 };
+
+const renderPrice = function() {
+    const container = document.querySelector("#priceContainer").innerHTML;
+    document.querySelector("#priceContainer").innerHTML = container + '<div style="text-align: center;"<p class="text_modal_window">Стоимость в Дукалисах</p>\n' +
+        '<input id="polePrice" class="pole shadow" name="pricepole" value="" style="width: auto"></div>';
+}
+
+const removePrice = function() {
+    document.querySelector("#priceContainer").innerHTML='';
+}
