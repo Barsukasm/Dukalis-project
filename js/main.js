@@ -271,6 +271,13 @@ function initModalMap(){
             myMap.geoObjects.removeAll();
         }
         myMap.geoObjects.add(geoObj);
+        createRequestWithDefaultHeader({path:`https://geocode-maps.yandex.ru/1.x/?apikey=1c06cba9-a122-4f84-80a1-22488eec7552&geocode=${coords[0]},${coords[1]}&format=json`, method:'GET'})
+            .then(response=>{
+                console.log(response);
+            })
+            .catch(err=>{
+                console.log('Не удалось запросить адрес пользователя по координатам ',err);
+            });
     });
 }
 

@@ -64,6 +64,26 @@ const createRequest = (options, queryOptions, body) => {
   });
 };
 
+
+const createRequestWithDefaultHeader = (options, queryOptions, body) => {
+  const requestUrl = compileUrl(options.path, queryOptions);
+  console.log(requestUrl);
+
+  return fetch(requestUrl, {
+    headers: new Headers({
+      Accept: "application/json"
+    }),
+    method: options.method || "GET",
+    body: body ? JSON.stringify(body) : undefined
+  }).then(response => {
+    if (response.status === 200) {
+      return response.json();
+    } else {
+      throw response.status;
+    }
+  });
+};
+
 const toggleClass = (element, className, needAdd) => {
   if (typeof element === "string") {
     element = document.querySelector(element);
