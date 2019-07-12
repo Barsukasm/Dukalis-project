@@ -1,10 +1,15 @@
+
 window.addEventListener('load', event =>{
     renderUserPanel(sessionStorage.getItem('userId'));
     console.log(sessionStorage.getItem('userId'));
     if(sessionStorage.length == 0) {
         window.location.href = `${window.location.origin}/index.html`;
     }
-    myUserMap.events.fire('click');
+
+    if (taskList !== undefined && myUserMap !== undefined){
+        myUserMap.events.fire('click');
+    }
+
 });
 
 const renderTasks = task => `
@@ -120,12 +125,18 @@ const RequestTasks = function(qParams) {
             taskList = response;
             if (myUserMap !== undefined){
                 myUserMap.events.fire('click');
+                console.log('Ивент карты выстрелил');
+            } else {
+                ymaps.ready(()=>{
+                    init('click');
+                });
             }
         })
         .catch(err => {
             console.log(err);
         });
 };
+
 
 
 
@@ -152,7 +163,7 @@ const RequestTransactions = function(qParams) {
 document.querySelector("#item_my_container1").addEventListener('click', event=>{
     RequestTasks();
     renderUserPanel(sessionStorage.getItem('userId'));
-    document.querySelector("#titlePage").innerHTML = 'Активные задания';
+    document.querySelector("#titlePage").innerHTML = 'Доступные задания';
 });
 
 document.querySelector("#item_my_container2").addEventListener('click',event=>{
@@ -207,6 +218,13 @@ const createTask = function() {
                 "type": "SOCIAL",
                 "price": document.querySelector('#polePrice') === null? 0: document.querySelector('#polePrice').value
             };
+            document.querySelector('input[name=address]').value = "";
+            document.querySelector('textarea[name=descriptionFull]').value = "";
+            document.querySelector('input[name=descriptionShort]').value = "";
+            document.querySelector('#polePrice').value = "";
+            if (myUserMap !== undefined) {
+                myUserMap.geoObjects.removeAll();
+            }
             createRequest({path:`/v001/tasks`, method: "POST"}, queryOptions, newTask)
                 .then(response => {
                     console.log("Ответ: ", response);
@@ -233,11 +251,11 @@ document.querySelector("#close_modal_window").addEventListener('click', e =>{
      console.log('Значение coords после закрытия модального диалога:', coords);
 });
 
-ymaps.ready(init);
 
 
 
-function init() {
+
+function init(toFire) {
     let geolocation = ymaps.geolocation;
     myUserMap = new ymaps.Map('map', {
             center: [55, 83],
@@ -282,6 +300,10 @@ function init() {
              });
          }
     });
+
+    if (toFire !== undefined){
+        myUserMap.events.fire(toFire);
+    }
 }
 
 ymaps.ready(initModalMap);
@@ -342,8 +364,8 @@ const renderPrice = function() {
     const container = document.querySelector("#priceContainer").innerHTML;
     document.querySelector("#priceContainer").innerHTML = container + '<div style="text-align: center;"<p class="text_modal_window">Стоимость в Дукалисах</p>\n' +
         '<input id="polePrice" class="pole shadow" name="pricepole" value="" style="width: auto"></div>';
-}
+};
 
 const removePrice = function() {
     document.querySelector("#priceContainer").innerHTML='';
-}
+};
